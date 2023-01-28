@@ -1,8 +1,9 @@
 package main
 
 import (
-	"clean-architecture/api/routes"
-	"clean-architecture/pkg/book"
+	"github.com/robertocamp/gd5gofcd/api/routes"
+	"github.com/robertocamp/gd5gofcd/pkg/book"
+
 	"context"
 	"fmt"
 	"log"
@@ -27,7 +28,7 @@ func main() {
 	app := fiber.New()
 	app.Use(cors.New())
 	app.Get("/", func(ctx *fiber.Ctx) error {
-		return ctx.Send([]byte("Welcome to the clean-architecture mongo book shop!"))
+		return ctx.Send([]byte("Welcome to the github.com/robertocamp/ mongo book shop!"))
 	})
 	api := app.Group("/api")
 	routes.BookRouter(api, bookService)
