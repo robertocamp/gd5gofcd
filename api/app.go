@@ -13,6 +13,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 )
 
 func main() {
@@ -24,14 +25,19 @@ func main() {
 	bookCollection := db.Collection("books")
 	bookRepo := book.NewRepo(bookCollection)
 	bookService := book.NewService(bookRepo)
+	stackService := stack.NewService()
 
 	app := fiber.New()
 	app.Use(cors.New())
+	app.Use(logger.New())
 	app.Get("/", func(ctx *fiber.Ctx) error {
 		return ctx.Send([]byte("Welcome to the github.com/robertocamp/ mongo book shop!"))
+		// return ctx.SendString("Hello, World 👋!")
 	})
 	api := app.Group("/api")
 	routes.BookRouter(api, bookService)
+	routes.StackRouter(api, stackService)
+
 	defer cancel()
 	log.Fatal(app.Listen(":3000"))
 }
