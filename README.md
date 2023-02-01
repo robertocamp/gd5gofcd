@@ -21,10 +21,14 @@
 ## stack JSON API
 - https://api.stackexchange.com/2.2/search?order=desc&sort=activity&intitle=perl&site=stackoverflow
 - https://api.stackexchange.com/2.2/search?order=desc&sort=activity&intitle=fiber&site=stackoverflow
+### json-to-go-struct
+- https://mholt.github.io/json-to-go/
 ### stack API integration to gd5gofcd
   1. working client with struct and json repsonse: /Users/robert/go/src/github.com/learning-go/stack/stack.go
   2. run the `stack.go` program and then copy the returned string as a file in the "json" folder
   3. convert this into an endpoint in the progam: "/stack"
+  4. from another handler, put up another endpoint that just contains the "items" array from the "fullstack" API
+  
 ## API testing
 ### run local: 
 - `go run app.go`
