@@ -1,12 +1,11 @@
 package stack
 
 import (
-	"github.com/robertocamp/gd5gofcd/api/presenter"
-	"github.com/robertocamp/gd5gofcd/pkg/entities"
 )
 
 
-type Service interface {}
+type Service interface {
+}
 
 type service struct {}
 
