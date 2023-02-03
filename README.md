@@ -27,13 +27,28 @@
   1. working client with struct and json repsonse: /Users/robert/go/src/github.com/learning-go/stack/stack.go
   2. run the `stack.go` program and then copy the returned string as a file in the "json" folder
   3. convert this into an endpoint in the progam: "/stack"
-  4. from another handler, put up another endpoint that just contains the "items" array from the "fullstack" API
-  
+  4. **branch complete:**  "stack"
+  5. convert the "int" strings to time.Time (if possible!)
+  6. from another handler, put up another endpoint that just contains the "items" array from the "fullstack" API
+
 ## API testing
 ### run local: 
 - `go run app.go`
 - `http://localhost:3000/api/stack`
 - look for services running on port 3000: `lsof -nP -iTCP -sTCP:LISTEN | grep 3000`
+
+## time conversion
+- timestring example(layout): "2022-08-30 09.05:27.567995"
+- Golang reference time for layouts:
+  + Layouts must use the reference time `Mon Jan 2 15:04:05 MST 2006` to show the pattern with which to format/parse a given time/string.
+  + "2006-01-02 15.04:05.000000"
+
+
+https://stackoverflow.com/questions/43431046/convert-unix-epoch-as-a-string-to-time-time-on-go
+https://www.epochconvert.com/programming/go
+https://zetcode.com/golang/datetime/
+https://www.geeksforgeeks.org/time-formatting-in-golang/
+
 
 ### unit tests:
 https://assertible.com/blog/testing-and-validating-api-responses-with-json-schema

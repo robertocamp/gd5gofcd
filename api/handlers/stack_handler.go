@@ -1,27 +1,40 @@
 package handlers
- 
+
 import (
-	"context"
-	"encoding/json"
-	"fmt"
-	"net/http"
-	"time"
-	"github.com/gofiber/fiber/v2"
+        "context"
+        "encoding/json"
+        "fmt"
+        "github.com/gofiber/fiber/v2"
+        "net/http"
+        "time"
+				"strings"
+				"strconv"
 )
 
 // smoke test Hello endpoint
 /* func GetStack(c *fiber.Ctx)  error {
-	return c.SendString("Hello, World 👋!")
+        return c.SendString("Hello, World 👋!")
 } */
 
-
-
-// const URL = "https://jsonplaceholder.typicode.com/todos/1"
 const URL = "https://api.stackexchange.com/2.2/search?order=desc&sort=activity&intitle=fiber&site=stackoverflow"
 
 
-// buid custom structs --they should be in the order they appear in the main struct
+// custom unmarshaller for time format
+type EpochConversion string
+func(ec *EpochConversion) UnmarshalJSON(data []byte) error {
+	t := strings.Trim(string(data), `"`)
+	sec, err := strconv.ParseInt(t, 10, 64)
+	if err != nil {
+		return err
+	}
+	epochTime := time.Unix(sec, 0).Format(time.RFC3339)
+	// epochTime := time.Unix(sec, 0).Format(time.ANSIC)
+	*ec = EpochConversion(epochTime)
+	return nil
+}
 
+
+// buid custom structs --they should be in the order they appear in the main struct
 type Owner struct {
 	Reputation   int    `json:"reputation"`
 	UserID       int    `json:"user_id"`
@@ -46,7 +59,6 @@ type Owner1 struct {
 	Link         string `json:"link"`
 }
 
-
 type Owner2 struct {
 	Reputation   int    `json:"reputation"`
 	UserID       int    `json:"user_id"`
@@ -66,25 +78,26 @@ type Owner3 struct {
 	Link         string `json:"link"`
 }
 
+
 type Items struct {
-	Tags             []string `json:"tags"`
-	Owner            Owner    `json:"owner,omitempty"`
-	IsAnswered       bool     `json:"is_answered"`
-	ViewCount        int      `json:"view_count"`
-	AnswerCount      int      `json:"answer_count"`
-	Score            int      `json:"score"`
-	LastActivityDate int      `json:"last_activity_date"`
-	CreationDate     int      `json:"creation_date"`
-	QuestionID       int      `json:"question_id"`
-	ContentLicense   string   `json:"content_license"`
-	Link             string   `json:"link"`
-	Title            string   `json:"title"`
-	LastEditDate     int      `json:"last_edit_date,omitempty"`
-	Owner0           Owner0   `json:"owner,omitempty"`
-	Owner1           Owner1   `json:"owner,omitempty"`
-	Owner2           Owner2   `json:"owner,omitempty"`
-	Owner3           Owner3   `json:"owner,omitempty"`
-	AcceptedAnswerID int      `json:"accepted_answer_id,omitempty"`
+	Tags             []string  					`json:"tags"`
+	Owner            Owner     					`json:"owner,omitempty"`
+	IsAnswered       bool      					`json:"is_answered"`
+	ViewCount        int       					`json:"view_count"`
+	AnswerCount      int       					`json:"answer_count"`
+	Score            int       					`json:"score"`
+	LastActivityDate EpochConversion   `json:"last_activity_date"`
+	CreationDate     int 		   					`json:"creation_date"`
+	QuestionID       int       					`json:"question_id"`
+	ContentLicense   string    					`json:"content_license"`
+	Link             string    					`json:"link"`
+	Title            string    					`json:"title"`
+	LastEditDate     int        				`json:"last_edit_date,omitempty"`
+	Owner0           Owner0    					`json:"owner,omitempty"`
+	Owner1           Owner1    					`json:"owner,omitempty"`
+	Owner2           Owner2    					`json:"owner,omitempty"`
+	Owner3           Owner3    					`json:"owner,omitempty"`
+	AcceptedAnswerID int       					`json:"accepted_answer_id,omitempty"`
 }
 
 type Stack struct {
@@ -96,37 +109,36 @@ type Stack struct {
 
 
 func GetStack(c *fiber.Ctx) error {
-	client := &http.Client{
-		Timeout: 30 * time.Second,
-	}
-	req, err := http.NewRequestWithContext(context.Background(),
-http.MethodGet, URL, nil)
-if err != nil {
-	panic(err)
-}
+        client := &http.Client{
+                Timeout: 30 * time.Second,
+        }
+        req, err := http.NewRequestWithContext(context.Background(),
+                http.MethodGet, URL, nil)
+        if err != nil {
+                panic(err)
+        }
 
-req.Header.Add("X-My-Client", "Learning Go")
-res, err := client.Do(req)
-if err != nil {
-	panic(err)
-}
+        req.Header.Add("X-My-Client", "Learning Go")
+        res, err := client.Do(req)
+        if err != nil {
+                panic(err)
+        }
 
-defer res.Body.Close()
-if res.StatusCode != http.StatusOK {
-	panic(fmt.Sprintf("unexpected status: got %v", res.Status))
-}
+        defer res.Body.Close()
+        if res.StatusCode != http.StatusOK {
+                panic(fmt.Sprintf("unexpected status: got %v", res.Status))
+        }
 
-fmt.Println(res.Header.Get("Content-Type"))
+        fmt.Println(res.Header.Get("Content-Type"))
 
+        fullStack := Stack{}
 
-fullStack := Stack{}
+        err = json.NewDecoder(res.Body).Decode(&fullStack)
+        if err != nil {
+                panic(err)
+        }
+        // print was development stage; now we need to return a web page
+        // fmt.Printf("%+v\n", fullStack)
 
-err = json.NewDecoder(res.Body).Decode(&fullStack)
-if err != nil {
-	panic(err)
-}
-// print was development stage; now we need to return a web page
-// fmt.Printf("%+v\n", fullStack)
-
-return c.Status(fiber.StatusOK).JSON(fullStack)
+        return c.Status(fiber.StatusOK).JSON(fullStack)
 }
