@@ -29,6 +29,8 @@ func(ec *EpochConversion) UnmarshalJSON(data []byte) error {
 }
 
 
+
+
 // read file ./basicstruct.json and open in Go
 // this will be replaced by getting the json in a stream from the API
 

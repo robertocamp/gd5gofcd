@@ -1,8 +1,8 @@
 package handlers
 
 import (
-        "context"
-        "encoding/json"
+        // "context"
+        // "encoding/json"
         "fmt"
         "github.com/gofiber/fiber/v2"
         "net/http"
@@ -16,7 +16,7 @@ import (
         return c.SendString("Hello, World 👋!")
 } */
 
-const URL = "https://api.stackexchange.com/2.2/search?order=desc&sort=activity&intitle=fiber&site=stackoverflow"
+const URL string = "https://api.stackexchange.com/2.2/search?order=desc&sort=activity&intitle=fiber&site=stackoverflow"
 
 
 // custom unmarshaller for time format
@@ -108,37 +108,23 @@ type Stack struct {
 }
 
 
-func GetStack(c *fiber.Ctx) error {
-        client := &http.Client{
-                Timeout: 30 * time.Second,
-        }
-        req, err := http.NewRequestWithContext(context.Background(),
-                http.MethodGet, URL, nil)
-        if err != nil {
-                panic(err)
-        }
 
-        req.Header.Add("X-My-Client", "Learning Go")
-        res, err := client.Do(req)
-        if err != nil {
-                panic(err)
-        }
 
-        defer res.Body.Close()
-        if res.StatusCode != http.StatusOK {
-                panic(fmt.Sprintf("unexpected status: got %v", res.Status))
-        }
+// new implementation of GetFullStack
+func (c *Client) getStack(f *fiber.Ctx) (*Stack, error) {
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/search?order=desc&sort=activity&intitle=fiber&site=stackoverflow", c.baseURL), nil)
+	if err != nil {
+		return nil, err
+	}
+  req.Header.Set("Content-Type", "application/json; charset=utf-8")
+  res := Stack{}
+	if err := c.sendRequest(req, &res); err !=nil {
+		return nil, err
+	}
+   // swap example code return with endpoint code
+	return &res, nil
+}
 
-        fmt.Println(res.Header.Get("Content-Type"))
-
-        fullStack := Stack{}
-
-        err = json.NewDecoder(res.Body).Decode(&fullStack)
-        if err != nil {
-                panic(err)
-        }
-        // print was development stage; now we need to return a web page
-        // fmt.Printf("%+v\n", fullStack)
-
-        return c.Status(fiber.StatusOK).JSON(fullStack)
+func GetStack(c *fiber.Ctx)  error {
+        return c.SendString("Hello, World 👋!")
 }

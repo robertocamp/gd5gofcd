@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/robertocamp/gd5gofcd/api/routes"
 	"github.com/robertocamp/gd5gofcd/pkg/book"
+	"github.com/robertocamp/gd5gofcd/pkg/stack"
 	// "github.com/robertocamp/gd5gofcd/pkg/stack"
 	"context"
 	"fmt"
@@ -25,7 +26,7 @@ func main() {
 	bookCollection := db.Collection("books")
 	bookRepo := book.NewRepo(bookCollection)
 	bookService := book.NewService(bookRepo)
-	// stackService := stack.NewService("fiber")
+	stackService := stack.NewService("fiber")<----
 
 	app := fiber.New()
 	app.Use(cors.New())
@@ -36,7 +37,7 @@ func main() {
 	})
 	api := app.Group("/api")
 	routes.BookRouter(api, bookService)
-	routes.StackRouter(api)
+	routes.StackRouter(api, stackService)
 
 	defer cancel()
 	log.Fatal(app.Listen(":3000"))

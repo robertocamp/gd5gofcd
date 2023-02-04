@@ -15,7 +15,8 @@
   + if the endpoint is not part of `book_handler.go`, add a new routes file in app.go
   + `routes.StackRouter(api stackService)`
   + new routes will require a new service
-
+2. defining the service: services are defined in pkg
+  + 
 
 
 ## stack JSON API
@@ -29,8 +30,8 @@
   3. convert this into an endpoint in the progam: "/stack"
   4. **branch complete:**  "stack"
   5. convert the "int" strings to time.Time (if possible!)
-  6. from another handler, put up another endpoint that just contains the "items" array from the "fullstack" API
-
+  6. from another handler, put up another endpoint that just contains the "items" array from the "fullstack" API, **sorted by creation_date**
+  
 ## API testing
 ### run local: 
 - `go run app.go`
@@ -57,3 +58,6 @@ http://www.jsontest.com/
 https://www.tumblr.com/docs/en/api/v1
 https://api.stackexchange.com/2.2/search?order=desc&sort=activity&intitle=perl&site=stackoverflow
 https://httpbin.org/
+
+
+return c.SendString("Hello, World 👋!")
