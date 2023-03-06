@@ -21,11 +21,12 @@ func main() {
 	if err != nil {
 		log.Fatal("Database Connection Error $s", err)
 	}
+	// services are defined in the pkg "book" or "stack"
 	fmt.Println("Database connection success!")
 	bookCollection := db.Collection("books")
 	bookRepo := book.NewRepo(bookCollection)
 	bookService := book.NewService(bookRepo)
-	// stackService := stack.NewService("fiber")
+	stackService := stack.NewService(stackAPI)
 
 	app := fiber.New()
 	app.Use(cors.New())
@@ -36,7 +37,7 @@ func main() {
 	})
 	api := app.Group("/api")
 	routes.BookRouter(api, bookService)
-	routes.StackRouter(api)
+	routes.StackRouter(api, stackService)
 
 	defer cancel()
 	log.Fatal(app.Listen(":3000"))

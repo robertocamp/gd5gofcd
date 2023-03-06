@@ -20,7 +20,7 @@
 
 ## stack JSON API
 - https://api.stackexchange.com/2.2/search?order=desc&sort=activity&intitle=perl&site=stackoverflow
-- https://api.stackexchange.com/2.2/search?order=desc&sort=activity&intitle=fiber&site=stackoverflow
+-  
 ### json-to-go-struct
 - https://mholt.github.io/json-to-go/
 ### stack API integration to gd5gofcd

@@ -5,7 +5,7 @@ package entities
 // 	"time"
 // )
 
-// buid custom structs --they should be in the order they appear in the main struct
+// Stack constructs the stack model under entities
 
 type Owner struct {
 	Reputation   int    `json:"reputation"`
@@ -30,7 +30,6 @@ type Owner1 struct {
 	DisplayName  string `json:"display_name"`
 	Link         string `json:"link"`
 }
-
 
 type Owner2 struct {
 	Reputation   int    `json:"reputation"`
