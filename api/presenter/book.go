@@ -1,7 +1,7 @@
 package presenter
 
 import (
-	"github.com/robertocamp/gd5gofcd/pkg/entities"
+	"clean-architecture/pkg/entities"
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )

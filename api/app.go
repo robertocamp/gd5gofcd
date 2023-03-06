@@ -1,9 +1,8 @@
 package main
 
 import (
-	"github.com/robertocamp/gd5gofcd/api/routes"
-	"github.com/robertocamp/gd5gofcd/pkg/book"
-	// "github.com/robertocamp/gd5gofcd/pkg/stack"
+	"clean-architecture/api/routes"
+	"clean-architecture/pkg/book"
 	"context"
 	"fmt"
 	"log"
@@ -13,7 +12,6 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"github.com/gofiber/fiber/v2/middleware/logger"
 )
 
 func main() {
@@ -25,27 +23,22 @@ func main() {
 	bookCollection := db.Collection("books")
 	bookRepo := book.NewRepo(bookCollection)
 	bookService := book.NewService(bookRepo)
-	// stackService := stack.NewService("fiber")
 
 	app := fiber.New()
 	app.Use(cors.New())
-	app.Use(logger.New())
 	app.Get("/", func(ctx *fiber.Ctx) error {
-		return ctx.Send([]byte("Welcome to the github.com/robertocamp/ mongo book shop!"))
-		// return ctx.SendString("Hello, World 👋!")
+		return ctx.Send([]byte("Welcome to the clean-architecture mongo book shop!"))
 	})
 	api := app.Group("/api")
 	routes.BookRouter(api, bookService)
-	routes.StackRouter(api)
-
 	defer cancel()
-	log.Fatal(app.Listen(":3000"))
+	log.Fatal(app.Listen(":8080"))
 }
 
 func databaseConnection() (*mongo.Database, context.CancelFunc, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(
-		"mongodb://127.0.0.1:27017/test").SetServerSelectionTimeout(5*time.
+		"mongodb://username:password@localhost:27017/fiber").SetServerSelectionTimeout(5*time.
 		Second))
 	if err != nil {
 		cancel()

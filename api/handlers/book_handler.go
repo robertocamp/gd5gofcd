@@ -1,9 +1,9 @@
 package handlers
 
 import (
-	"github.com/robertocamp/gd5gofcd/api/presenter"
-	"github.com/robertocamp/gd5gofcd/pkg/book"
-	"github.com/robertocamp/gd5gofcd/pkg/entities"
+	"clean-architecture/api/presenter"
+	"clean-architecture/pkg/book"
+	"clean-architecture/pkg/entities"
 	"github.com/gofiber/fiber/v2"
 	"github.com/pkg/errors"
 	"net/http"

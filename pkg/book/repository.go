@@ -1,8 +1,8 @@
 package book
 
 import (
-	"github.com/robertocamp/gd5gofcd/api/presenter"
-	"github.com/robertocamp/gd5gofcd/pkg/entities"
+	"clean-architecture/api/presenter"
+	"clean-architecture/pkg/entities"
 	"context"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"

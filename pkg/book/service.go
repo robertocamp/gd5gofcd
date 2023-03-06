@@ -1,8 +1,8 @@
 package book
 
 import (
-	"github.com/robertocamp/gd5gofcd/api/presenter"
-	"github.com/robertocamp/gd5gofcd/pkg/entities"
+	"clean-architecture/api/presenter"
+	"clean-architecture/pkg/entities"
 )
 
 //Service is an interface from which our api module can access our repository of all our models

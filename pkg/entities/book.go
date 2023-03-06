@@ -18,4 +18,3 @@ type Book struct {
 type DeleteRequest struct {
 	ID string `json:"id"`
 }
-
